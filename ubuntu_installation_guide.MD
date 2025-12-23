@@ -49,7 +49,7 @@ sudo apt install -y \
 # Clone and build
 cd ~/Projects
 git clone https://github.com/Post2Fix/ory-hydra-refrence-java
-cd ory-hydra-refrence-java
+cd ~/Projects/ory-hydra-refrence-java
 chmod +x gradlew
 ./gradlew build -x test
 
@@ -303,7 +303,7 @@ cd ~/Projects
 git clone <repository-url> ory-hydra-refrence-java
 
 # Navigate to project directory
-cd ory-hydra-refrence-java
+cd ~/Projects/ory-hydra-refrence-java
 
 # Verify project structure
 ls -la

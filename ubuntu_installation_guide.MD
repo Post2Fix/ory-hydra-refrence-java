@@ -113,10 +113,12 @@ sudo update-alternatives --display java
 ```plaintext
 # Find Java installation path
 readlink -f $(which java)
-# Typical output: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# Typical output for X86_64 / ARM processors:
+# x86_64:  /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# arm64:   /usr/lib/jvm/java-21-openjdk-arm64/bin/java
 
-# Set JAVA_HOME in ~/.bashrc
-echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> ~/.bashrc
+# Set JAVA_HOME in ~/.bashrc (architecture-independent)
+echo 'export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))' >> ~/.bashrc
 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 
 # Reload configuration
@@ -124,7 +126,9 @@ source ~/.bashrc
 
 # Verify
 echo $JAVA_HOME
-# Expected: /usr/lib/jvm/java-21-openjdk-amd64
+# Expected:
+# - /usr/lib/jvm/java-21-openjdk-amd64   (x86_64)
+# - /usr/lib/jvm/java-21-openjdk-arm64   (arm64)
 
 java -version
 ```

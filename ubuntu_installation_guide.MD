@@ -395,7 +395,7 @@ cd ~/Projects/ory-hydra-refrence-java
 # Pull Hydra Docker image (first time only)
 docker pull oryd/hydra:v25.4.0
 
-# Start Hydra with docker-compose
+# Start Hydra with Docker Compose (v2)
 docker compose -f ./reference-app/src/test/resources/docker-compose.yml up
 
 # Wait for these messages:
@@ -467,8 +467,8 @@ java -version
 sudo update-alternatives --config java
 
 # Select Java 21 (choose the number)
-# Or set manually:
-sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# If you need to force Java 21 non-interactively (architecture-independent):
+sudo update-alternatives --set java "$(update-alternatives --list java | grep 'java-21-openjdk' | head -n1)"
 
 # Verify
 java -version
@@ -480,14 +480,18 @@ java -version
 # Check JAVA_HOME
 echo $JAVA_HOME
 
-# If empty, set it:
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+
+# If empty, set it (architecture-independent):
+
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
 export PATH=$JAVA_HOME/bin:$PATH
 
-# Make permanent:
-echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' &gt;&gt; ~/.bashrc
-echo 'export PATH=$JAVA_HOME/bin:$PATH' &gt;&gt; ~/.bashrc
+Make permanent:
+
+echo 'export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))' >> ~/.bashrc
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
+
 ```
 
 ### Docker Issues (Ubuntu 24.04 Specific)
@@ -540,10 +544,6 @@ docker compose version
 
 # If not found, install:
 sudo apt install -y docker-compose-v2
-
-# Or use the old standalone version:
-sudo apt install -y docker-compose
-```
 
 ### Port Conflicts
 
@@ -619,7 +619,9 @@ sudo systemctl disable apparmor
 free -h
 
 # Increase Gradle memory in gradle.properties:
-echo "org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m" &gt;&gt; gradle.properties
+echo "org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m" >> gradle.properties
+
+
 
 # Or set environment variable:
 export GRADLE_OPTS="-Xmx2048m -XX:MaxMetaspaceSize=512m"
@@ -668,7 +670,7 @@ nano ~/.bashrc
 # Add at the end:
 
 # Java Configuration
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
 export PATH=$JAVA_HOME/bin:$PATH
 
 # Gradle Configuration (optional)
@@ -735,7 +737,7 @@ echo ""
 
 # Java
 echo "Java Version:"
-java -version 2&gt;&amp;1 | head -n 1
+java -version 2>&1 | head -n 1
 echo ""
 
 # JAVA_HOME
@@ -760,7 +762,7 @@ echo ""
 
 # Docker Permissions
 echo "Docker Permissions (should not require sudo):"
-docker ps &gt; /dev/null 2&gt;&amp;1 &amp;&amp; echo "✓ OK" || echo "✗ FAIL - Run: sudo usermod -aG docker $USER"
+docker ps > /dev/null 2>&1 && echo "✓ OK" || echo "✗ FAIL - Run: sudo usermod -aG docker $USER"
 echo ""
 
 # jq
@@ -775,23 +777,26 @@ echo ""
 
 # Gradle
 echo "Gradle Version:"
-./gradlew --version 2&gt;/dev/null | grep "Gradle" || echo "Run from project directory"
+./gradlew --version 2>/dev/null | grep "Gradle" || echo "Run from project directory"
 echo ""
 
 # Ports
 echo "Port Status:"
 echo -n "  Port 8080: "
-ss -tuln | grep -q ":8080 " &amp;&amp; echo "IN USE" || echo "Available"
+ss -tuln | grep -q ":8080 " && echo "IN USE" || echo "Available"
 echo -n "  Port 4444: "
-ss -tuln | grep -q ":4444 " &amp;&amp; echo "IN USE" || echo "Available"
+ss -tuln | grep -q ":4444 " && echo "IN USE" || echo "Available"
 echo -n "  Port 4445: "
-ss -tuln | grep -q ":4445 " &amp;&amp; echo "IN USE" || echo "Available"
+ss -tuln | grep -q ":4445 " && echo "IN USE" || echo "Available"
 echo ""
 
 # Playwright Dependencies
 echo "Playwright Dependencies:"
-dpkg -l | grep -q libmanette-0.2-0 &amp;&amp; echo "  ✓ libmanette-0.2-0" || echo "  ✗ libmanette-0.2-0 missing"
-dpkg -l | grep -q libflite1 &amp;&amp; echo "  ✓ libflite1" || echo "  ✗ libflite1 missing"
+
+dpkg -l | grep -q libmanette-0.2-0 && echo "  ✓ libmanette-0.2-0" || echo "  ✗ libmanette-0.2-0 missing"
+
+dpkg -l | grep -q libflite1 && echo "  ✓ libflite1" || echo "  ✗ libflite1 missing"
+
 echo ""
 
 echo "=== Verification Complete ==="
@@ -799,7 +804,8 @@ echo ""
 echo "Next steps:"
 echo "1. cd ~/Projects/ory-hydra-refrence-java"
 echo "2. ./gradlew build -x test"
-echo "3. docker-compose -f ./reference-app/src/test/resources/docker-compose.yml up"
+echo "3. docker compose -f ./reference-app/src/test/resources/docker-compose.yml up"
+
 echo "4. ./gradlew bootRun"
 ```
 
@@ -864,7 +870,7 @@ cd idea-IC-*/bin
 sudo snap install code --classic
 
 # Or via APT
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor &gt; packages.microsoft.gpg
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
 echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
 sudo apt update

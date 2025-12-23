@@ -16,7 +16,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install -y openjdk-21-jdk openjdk-21-jre
 
 # Install Docker
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt install -y docker.io docker-compose-v2
 sudo usermod -aG docker $USER
 newgrp docker
 

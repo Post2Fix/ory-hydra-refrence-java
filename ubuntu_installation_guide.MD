@@ -396,7 +396,7 @@ cd ~/Projects/ory-hydra-refrence-java
 docker pull oryd/hydra:v25.4.0
 
 # Start Hydra with docker-compose
-docker-compose -f ./reference-app/src/test/resources/docker-compose.yml up
+docker compose -f ./reference-app/src/test/resources/docker-compose.yml up
 
 # Wait for these messages:
 # ✓ "Successfully applied migrations!"

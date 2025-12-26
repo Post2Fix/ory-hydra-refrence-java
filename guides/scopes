@@ -1,0 +1,29 @@
+## Adding Scopes
+
+docker compose -f ./reference-app/src/test/resources/docker-compose.yml exec hydra \
+hydra create client \
+--endpoint http://127.0.0.1:4445 \
+--grant-type authorization_code,refresh_token \
+--response-type code,id_token \
+--format json \
+# add addtional scopes as needed below
+--scope openid --scope offline  --scope profile --scope offline_access \
+--redirect-uri http://127.0.0.1:5555/callback
+
+
+# output below (docker warnning can be ignored) includes
+
+
+WARN[0000] /home/parallels/Projects/ory-hydra-refrence-java/reference-app/src/test/resources/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+
+{"client_id":"d1180bcf-4b98-4232-b533-b6cce2f69406","client_name":"","client_secret":"B2RauDYPFwsrL4U.8vyrX7jO9K","client_secret_expires_at":0,"client_uri":"","created_at":"2025-12-26T15:27:38Z","grant_types":["authorization_code","refresh_token"],"jwks":{},"logo_uri":"","metadata":{},"owner":"","policy_uri":"","redirect_uris":["http://127.0.0.1:5555/callback"],"registration_access_token":"ory_at_D9_1R4-lo551Qq5jMEnIwlkOKSuXuuQp7HoE7cMKbAg.96g2k3ehFGHVQ89yW8SKfcZKVeglRVAhTX_IrkbF_g4","registration_client_uri":"http://localhost:4444/oauth2/register","request_object_signing_alg":"RS256","response_types":["code","id_token"],"scope":"openid offline","skip_consent":false,"skip_logout_consent":false,"subject_type":"public","token_endpoint_auth_method":"client_secret_basic","tos_uri":"","updated_at":"2025-12-26T15:27:38.335512Z","userinfo_signed_response_alg":"none"}
+
+"client_id":"d1180bcf-4b98-4232-b533-b6cce2f69406"
+"client_secret":"B2RauDYPFwsrL4U.8vyrX7jO9K"
+
+"redirect_uris":["http://127.0.0.1:5555/callback"]
+"registration_access_token":"ory_at_D9_1R4-lo551Qq5jMEnIwlkOKSuXuuQp7HoE7cMKbAg.96g2k3ehFGHVQ89yW8SKfcZKVeglRVAhTX_IrkbF_g4"
+"registration_client_uri":"http://localhost:4444/oauth2/register"
+
+
+Update ENV after having new autherization code and refresh token

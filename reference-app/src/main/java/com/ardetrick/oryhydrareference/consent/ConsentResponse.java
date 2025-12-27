@@ -4,6 +4,7 @@ import java.util.List;
 
 public sealed interface ConsentResponse permits
         ConsentResponse.Accepted,
+        ConsentResponse.Rejected,
         ConsentResponse.DisplayUI,
         ConsentResponse.Skip {
 
@@ -13,5 +14,7 @@ public sealed interface ConsentResponse permits
                      String consentChallenge) implements ConsentResponse { }
 
     record Accepted(String redirectTo) implements ConsentResponse { }
+
+    record Rejected(String redirectTo) implements ConsentResponse { }
 
 }

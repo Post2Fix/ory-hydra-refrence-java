@@ -2,6 +2,7 @@ package com.ardetrick.oryhydrareference.consent;
 
 import com.ardetrick.oryhydrareference.consent.ConsentResponse.Accepted;
 import com.ardetrick.oryhydrareference.consent.ConsentResponse.DisplayUI;
+import com.ardetrick.oryhydrareference.consent.ConsentResponse.Rejected;
 import com.ardetrick.oryhydrareference.consent.ConsentResponse.Skip;
 import com.ardetrick.oryhydrareference.hydra.AcceptConsentRequest;
 import com.ardetrick.oryhydrareference.hydra.HydraAdminClient;
@@ -36,8 +37,16 @@ public class ConsentService {
         return new DisplayUI(consentRequest.getRequestedScope(), consentChallenge);
     }
 
+    private static final String DENY_ACCESS_SUBMIT_VALUE = "Deny access";
+
     public ConsentResponse processConsentForm(@NonNull final ConsentForm consentForm) {
         val consentChallenge = consentForm.consentChallenge();
+
+        // Check if user clicked "Deny access" button
+        if (DENY_ACCESS_SUBMIT_VALUE.equals(consentForm.submit())) {
+            val oauth2RedirectTo = hydraAdminClient.rejectConsentRequest(consentChallenge);
+            return new Rejected(oauth2RedirectTo.getRedirectTo());
+        }
 
         val consentRequest = hydraAdminClient.getConsentRequest(consentChallenge);
 

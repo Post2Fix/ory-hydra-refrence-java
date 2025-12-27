@@ -2,6 +2,7 @@ package com.ardetrick.oryhydrareference.consent;
 
 import com.ardetrick.oryhydrareference.consent.ConsentResponse.Accepted;
 import com.ardetrick.oryhydrareference.consent.ConsentResponse.DisplayUI;
+import com.ardetrick.oryhydrareference.consent.ConsentResponse.Rejected;
 import com.ardetrick.oryhydrareference.consent.ConsentResponse.Skip;
 import com.ardetrick.oryhydrareference.modelandview.ModelAndViewUtils;
 import lombok.NonNull;
@@ -14,6 +15,7 @@ public class ConsentModelAndViewMapper {
             case Skip r -> handleSkip(r);
             case DisplayUI r -> handleDisplayUI(r);
             case Accepted r -> handleAccepted(r);
+            case Rejected r -> handleRejected(r);
         };
     }
 
@@ -29,6 +31,10 @@ public class ConsentModelAndViewMapper {
 
     private static ModelAndView handleAccepted(Accepted accepted) {
         return ModelAndViewUtils.redirectToDifferentContext(accepted.redirectTo());
+    }
+
+    private static ModelAndView handleRejected(Rejected rejected) {
+        return ModelAndViewUtils.redirectToDifferentContext(rejected.redirectTo());
     }
 
 }

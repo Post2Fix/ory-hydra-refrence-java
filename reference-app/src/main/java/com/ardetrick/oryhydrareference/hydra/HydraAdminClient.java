@@ -99,6 +99,20 @@ public class HydraAdminClient {
         }
     }
 
+    public OAuth2RedirectTo rejectConsentRequest(@NonNull String consentChallenge) {
+        val rejectRequest = new RejectOAuth2Request()
+                .error("access_denied")
+                .errorDescription("The resource owner denied the request");
+        try {
+            return oAuth2Api.rejectOAuth2ConsentRequest(consentChallenge, rejectRequest);
+        } catch (ApiException e) {
+            switch (e.getCode()) {
+                case 404, 500 -> throw new RuntimeException("code: " + e.getCode(), e);
+                default -> throw new RuntimeException("unhandled code: " + e.getCode(), e);
+            }
+        }
+    }
+
     @Data
     @org.springframework.context.annotation.Configuration
     @ConfigurationProperties("reference-app.hydra")

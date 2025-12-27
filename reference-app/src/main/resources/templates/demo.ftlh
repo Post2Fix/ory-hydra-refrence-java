@@ -54,7 +54,7 @@ hydra_client=$(docker-compose -f ./reference-app/src/test/resources/docker-compo
     --format json \
     --secret omit-for-random-secret-1 \
     --scope openid --scope offline \
-    --redirect-uri http://127.0.0.1:5555/callback
+    --redirect-uri http://127.0.0.1:8080/callback
 )
 
 # Put the client ID and client secret values into env variables for later use.

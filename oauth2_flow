@@ -130,10 +130,10 @@ hydra_client_redirect_uri_0=http://127.0.0.1:8080/callback
 ```
      User          Browser         Identity Provider      Authorization Server
        |              |                   |                        |
-       |   (1) Click Login               |                        |
+       |   (1) Click Login               |                         |
        |------------->|                   |                        |
        |              |                   |                        |
-       |              |  (2) GET /oauth2/auth?client_id=...       |
+       |              |  (2) GET /oauth2/auth?client_id=...        |
        |              |----------------------------------------------->|
        |              |                   |                        |
        |              |  (3) 302 Redirect to /login?login_challenge=...|
@@ -145,10 +145,10 @@ hydra_client_redirect_uri_0=http://127.0.0.1:8080/callback
        |              |  (5) Return Login HTML                     |
        |              |<------------------|                        |
        |              |                   |                        |
-       |  (6) Display Login Form         |                        |
+       |  (6) Display Login Form         |                         |
        |<-------------|                   |                        |
        |              |                   |                        |
-       |  (7) Enter Credentials          |                        |
+       |  (7) Enter Credentials          |                         |
        |------------->|                   |                        |
        |              |                   |                        |
        |              |  (8) POST /login (credentials + challenge) |
@@ -164,10 +164,10 @@ hydra_client_redirect_uri_0=http://127.0.0.1:8080/callback
        |              |<------------------|                        |
        |              |                   |                        |
        |              |  (12) Follow redirect                      |
-       |              |----------------------------------------------->|
+       |              |------------------------------------------->|
        |              |                   |                        |
        |              |  (13) 302 Redirect to /consent?consent_challenge=...
-       |              |<-----------------------------------------------|
+       |              |<-------------------------------------------|
        |              |                   |                        |
        |              |  (14) GET /consent?consent_challenge=...   |
        |              |------------------>|                        |
@@ -194,10 +194,10 @@ hydra_client_redirect_uri_0=http://127.0.0.1:8080/callback
        |              |<------------------|                        |
        |              |                   |                        |
        |              |  (22) Follow redirect                      |
-       |              |----------------------------------------------->|
+       |              |------------------------------------------->|
        |              |                   |                        |
        |              |  (23) 302 Redirect to callback?code=...    |
-       |              |<-----------------------------------------------|
+       |              |<-------------------------------------------|
        |              |                   |                        |
        |              |  (24) GET /callback?code=...               |
        |              |------------------>|                        |
@@ -212,8 +212,10 @@ hydra_client_redirect_uri_0=http://127.0.0.1:8080/callback
        |              |  (27) Display tokens / Set session         |
        |              |<------------------|                        |
        |              |                   |                        |
-       |  (28) User is authenticated     |                        |
+       |  (28) User is authenticated      |                        |
        |<-------------|                   |                        |
+       |              |                   |                        |
+     User          Browser         Identity Provider      Authorization Server
 ```
 
 ---

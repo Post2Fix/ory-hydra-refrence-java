@@ -1,4 +1,6 @@
-## Adding Scopes
+## Example for adding Scopes
+
+## The standard request from the main documentation for generating a client + the extra scopes that are missing when run as-is (example of adding scopes)
 
 docker compose -f ./reference-app/src/test/resources/docker-compose.yml exec hydra \
 hydra create client \
